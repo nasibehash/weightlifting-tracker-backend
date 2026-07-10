@@ -17,7 +17,18 @@ builder.Services.AddCors(o => o.AddDefaultPolicy(p =>
     p.WithOrigins().AllowAnyHeader().AllowAnyMethod()));
 
 var app = builder.Build();
-app.UseCors();
+app.Use(async (ctx, next) =>
+{
+    ctx.Response.Headers["Access-Control-Allow-Origin"] = "*";
+    ctx.Response.Headers["Access-Control-Allow-Headers"] = "*";
+    ctx.Response.Headers["Access-Control-Allow-Methods"] = "*";
+    if (ctx.Request.Method == "OPTIONS")
+    {
+        ctx.Response.StatusCode = 204;
+        return;
+    }
+    await next();
+});
 
 // Render/Railway inject a PORT env var
 var port = Environment.GetEnvironmentVariable("PORT");
