@@ -14,7 +14,7 @@ var origins = (Environment.GetEnvironmentVariable("FRONTEND_ORIGIN")
     .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
 builder.Services.AddCors(o => o.AddDefaultPolicy(p =>
-    p.WithOrigins(origins).AllowAnyHeader().AllowAnyMethod()));
+    p.WithOrigins().AllowAnyHeader().AllowAnyMethod()));
 
 var app = builder.Build();
 app.UseCors();
